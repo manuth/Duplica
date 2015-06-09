@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="AlleGefundenenDuplikate" Bounds="-447.424989827474,143.247552760315,160.766666666667,25.96" Label="Alle gefundenen Duplikate" UseManualLocation="True" />
+    <Node Id="AlleZusammengesammeltenDateien" Category="Comment" Bounds="-288.185833587647,87.2874527603151,215.93,25.96" Label="Alle zusammengesammelten Dateien" UseManualLocation="True" />
+    <Node Id="Benutzereingaben" Category="Category3" Bounds="-74.5,-117.5,115.946666666667,25.96" UseManualLocation="True" />
+    <Node Id="FileAnalyser" Bounds="-42.2558335876465,127.580004321289,78.1266666666667,25.96" Label="ScanFolder" UseManualLocation="True" />
+    <Node Id="FileAnalyser1" Bounds="-164.458333708445,183.540104321289,103.136666666667,25.96" Label="DuplicateFinder" UseManualLocation="True" />
+    <Node Id="FolderBrowser" Bounds="-75.5,17.4499022379557,95.6133333333333,25.96" UseManualLocation="True" />
+    <Node Id="Programm" Category="Category2" Bounds="-152,-228,127.036666666667,25.96" Label="Programm - Duplica" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="AlleGefundenenDuplikate" Target="Programm" Bounds="-357.302309686123,-194.84115734203,253.679753433139,338.088710102345" />
+    <Link Source="Benutzereingaben" Target="FolderBrowser" Bounds="-25.8770961737378,-91.54,8.27637661092498,100.020556524968" />
+    <Link Source="FileAnalyser" Target="FolderBrowser" Bounds="-26.0286121368408,52.2043838500977,16.7553033828735,75.375617980957" />
+    <Link Source="FileAnalyser1" Target="AlleGefundenenDuplikate" Bounds="-279.174543455197,170.157779447398,114.716209746752,18.1868136005212" />
+    <Link Source="FolderBrowser" Target="FileAnalyser" Bounds="-21.800745010376,43.4099006652832,16.6580924987793,75.4014930725098" />
+    <Link Source="FolderBrowser" Target="FileAnalyser1" Bounds="-102.124157378307,43.4099022379557,67.7726785051935,132.12227965604" />
+    <Link Source="FolderBrowser" Target="FolderBrowser" Bounds="-51.5966682434082,-12.5500974655151,47.8035254478455,29.9999990463257" />
+    <Link Source="Programm" Target="Benutzereingaben" Bounds="-80.0293960784313,-202.04,50.1393278286331,76.9980644161483" />
+  </Links>
+  <Categories>
+    <Category Id="Category2" Label="Kategorie 2" Background="#FF339933" IsTag="True" />
+    <Category Id="Category3" Label="Kategorie 3" Background="#FF3EBCED" IsTag="True" />
+    <Category Id="Comment" Label="Kommentar" Description="Stellt einen benutzerdefinierten Kommentar im Diagramm dar" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="Kommentare" />
+  </Categories>
+  <Properties>
+    <Property Id="Background" Label="Hintergrund" Description="Die Hintergrundfarbe." DataType="System.Windows.Media.Brush" />
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsProviderRoot" Label="IsProviderRoot" Description="IsProviderRoot" DataType="System.Boolean" />
+    <Property Id="IsTag" DataType="System.Boolean" />
+    <Property Id="Label" Label="Bezeichnung" Description="Anzeigbare Bezeichnung eines Objekts, das Anmerkungen einblenden werden kann" DataType="System.String" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+  </Properties>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Kategorie 2" ValueLabel="Weist Kategorie auf">
+      <Condition Expression="HasCategory('Category2')" />
+      <Setter Property="Background" Value="#FF339933" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Kategorie 3" ValueLabel="Weist Kategorie auf">
+      <Condition Expression="HasCategory('Category3')" />
+      <Setter Property="Background" Value="#FF3EBCED" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Kommentar" ValueLabel="Hat Kommentar">
+      <Condition Expression="HasCategory('Comment')" />
+      <Setter Property="Background" Value="#FFFFFACD" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+      <Setter Property="StrokeThickness" Value="1" />
+      <Setter Property="NodeRadius" Value="2" />
+      <Setter Property="MaxWidth" Value="250" />
+    </Style>
+  </Styles>
+</DirectedGraph>

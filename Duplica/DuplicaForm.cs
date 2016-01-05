@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
+using Duplica.CustomForms;
 
 namespace Duplica
 {
@@ -43,13 +44,15 @@ namespace Duplica
                 Dictionary<string, FileInfo[]> duplicateFiles = e.DuplicateFiles.OrderByDescending(duplicateFile => duplicateFile.Value[1].Length).ToDictionary(duplicateFile => duplicateFile.Key, duplicateFile => duplicateFile.Value);
                 foreach (KeyValuePair<string, FileInfo[]> sameFiles in duplicateFiles)
                 {
-                    ListViewGroup hashFilesGroup = new ListViewGroup("Grösse: " + sameFiles.Value[1].Length.ToString("#,0.00 KB"));
+                    ListViewGroup hashFilesGroup = new ListViewGroup("Grösse: " + Utilities.BytesToString(sameFiles.Value[0].Length));
                     foreach (FileInfo duplicateFile in sameFiles.Value)
-                    {
-                        ListViewItem duplicateFileItem = new ListViewItem(new string[] { duplicateFile.Name, ((float)duplicateFile.Length / 1024f).ToString("#,0.00 KB"), duplicateFile.FullName });
-                        /* ToDo: Anpassung je nach Dateigrösse */
-                        hashFilesGroup.Items.Add(duplicateFileItem);
-                    }
+                        hashFilesGroup.Items.Add(
+                            new ListViewItem(new string[]
+                            {
+                                duplicateFile.Name,
+                                Utilities.BytesToString(duplicateFile.Length),
+                                duplicateFile.FullName
+                            }));
                     foreach (ListViewItem fileItem in hashFilesGroup.Items)
                         duplicateLister.Items.Add(fileItem);
                     duplicateLister.Groups.Add(hashFilesGroup);
@@ -62,17 +65,17 @@ namespace Duplica
             okButton.InvokeIfRequired(() => okButton.Enabled = true);
         }
 
-        private void duplicateLister_MouseDown(object sender, MouseEventArgs e)
+        private void duplicateLister_ItemActivate(object sender, EventArgs e)
         {
-            if ((e.Button == MouseButtons.Left) && e.Clicks < 2)
-            {
-                List<string> files = new List<string>();
-                foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
-                    files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
-                (sender as ListView).DoDragDrop(new DataObject(DataFormats.FileDrop, files.ToArray()), DragDropEffects.Copy);
-            }
-            else if (e.Clicks >= 2 && e.Button == MouseButtons.Left)
-                OpenSelectedEntry(sender, EventArgs.Empty);
+            OpenSelectedEntry(sender, EventArgs.Empty);
+        }
+
+        private void duplicateLister_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            List<string> files = new List<string>();
+            foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
+                files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
+            (sender as ListView).DoDragDrop(new DataObject(DataFormats.FileDrop, files.ToArray()), DragDropEffects.Copy);
         }
 
         private void OpenSelectedEntry(object sender, EventArgs e)
@@ -85,12 +88,35 @@ namespace Duplica
 
         private void kopierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            sender = (((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as ListView);
+
             StringCollection files = new StringCollection();
 
-            sender = (((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as ListView);
             foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
                 files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
             Clipboard.SetFileDropList(files);
+        }
+        
+        private void explorerMI_Click(object sender, EventArgs e)
+        {
+            sender = (((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as ListView);
+
+            StringCollection files = new StringCollection();
+
+            foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
+                files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
+
+            foreach (string file in files)
+            {
+                Process process = new Process();
+
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.FileName = "explorer";
+                process.StartInfo.Arguments = " /select," + file;
+                process.Start();
+            }
+            return;
         }
 
         private void addPathButton_Click(object sender, EventArgs e)
@@ -129,7 +155,11 @@ namespace Duplica
             grabber = new FileGrabber.FileGrabber
             (
                 pathsListBox.Items.Cast<string>().ToArray(),
-                skipPathsListBox.Items.Cast<string>().ToArray()
+                skipPathsListBox.Items.Cast<string>().ToArray(),
+                maxSizeUnitBox.Value,
+                maxSizeUnitBox.SelectedIndex != 0,
+                minSizeUnitBox.Value,
+                minSizeUnitBox.SelectedIndex != 0
             );
             grabber.FileGrabberFinished += new FileGrabber.FileGrabberFinishedEventHandler(grabber_FileGrabberFinished);
             grabber.GrabFiles();

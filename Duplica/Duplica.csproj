@@ -50,8 +50,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
@@ -70,6 +68,7 @@
     <Compile Include="Classes\ListViewItemComparer.cs" />
     <Compile Include="Classes\SafeInvoker.cs" />
     <Compile Include="Classes\WatchedListViewItemCollection.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="CustomForms\CustomListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -77,6 +76,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CustomForms\RichTextBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomForms\SizeUnitComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DuplicaForm.cs">
@@ -94,8 +96,10 @@
     <Compile Include="FileGrabber\FileGrabberFinishedEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="DuplicaForm.resx">
       <DependentUpon>DuplicaForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

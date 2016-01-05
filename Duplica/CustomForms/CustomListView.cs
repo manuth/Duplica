@@ -13,7 +13,7 @@ namespace Duplica.CustomForms
     /// Stellt eine ListView dar, welche den Windows Explorer-Look hat.
     /// Zudem passt er die Grösse der Spalten bei jeder Änderung der Auflistung automatisch an.
     /// </summary>
-    public partial class CustomListView : ListView
+    public partial class CustomListView
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);

@@ -38,18 +38,14 @@
             this.copyMI = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsPanel = new System.Windows.Forms.Panel();
             this.fileLengthBox = new System.Windows.Forms.GroupBox();
-            this.maxSizeUnitBox = new Duplica.CustomForms.FileSizeUnitBox();
-            this.minSizeUnitBox = new Duplica.CustomForms.FileSizeUnitBox();
             this.maxSizeLabel = new System.Windows.Forms.Label();
             this.minSizeLabel = new System.Windows.Forms.Label();
             this.skipPathsGroupBox = new System.Windows.Forms.GroupBox();
-            this.skipPathsDescriptionBox = new Duplica.RichTextBoxEx();
             this.removeSkipPathButton = new System.Windows.Forms.Button();
             this.addSkipPathButton = new System.Windows.Forms.Button();
             this.skipPathsListBox = new System.Windows.Forms.ListBox();
             this.okButton = new System.Windows.Forms.Button();
             this.pathsGroupBox = new System.Windows.Forms.GroupBox();
-            this.pathsDescriptionBox = new Duplica.RichTextBoxEx();
             this.removePathButton = new System.Windows.Forms.Button();
             this.addPathButton = new System.Windows.Forms.Button();
             this.pathsListBox = new System.Windows.Forms.ListBox();
@@ -58,6 +54,10 @@
             this.FileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.FileLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.FullPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.maxSizeUnitBox = new Duplica.CustomForms.FileSizeUnitBox();
+            this.minSizeUnitBox = new Duplica.CustomForms.FileSizeUnitBox();
+            this.skipPathsDescriptionBox = new Duplica.RichTextBoxEx();
+            this.pathsDescriptionBox = new Duplica.RichTextBoxEx();
             this.FileListContextMenu.SuspendLayout();
             this.optionsPanel.SuspendLayout();
             this.fileLengthBox.SuspendLayout();
@@ -75,7 +75,7 @@
             this.separatorMI,
             this.copyMI});
             this.FileListContextMenu.Name = "contextMenuStrip1";
-            this.FileListContextMenu.Size = new System.Drawing.Size(184, 98);
+            this.FileListContextMenu.Size = new System.Drawing.Size(184, 76);
             // 
             // openMI
             // 
@@ -129,22 +129,6 @@
             this.fileLengthBox.TabStop = false;
             this.fileLengthBox.Text = "Dateigrösse filtern";
             // 
-            // maxSizeUnitBox
-            // 
-            this.maxSizeUnitBox.Location = new System.Drawing.Point(109, 44);
-            this.maxSizeUnitBox.Name = "maxSizeUnitBox";
-            this.maxSizeUnitBox.SelectedIndex = 0;
-            this.maxSizeUnitBox.Size = new System.Drawing.Size(163, 21);
-            this.maxSizeUnitBox.TabIndex = 5;
-            // 
-            // minSizeUnitBox
-            // 
-            this.minSizeUnitBox.Location = new System.Drawing.Point(109, 18);
-            this.minSizeUnitBox.Name = "minSizeUnitBox";
-            this.minSizeUnitBox.SelectedIndex = 0;
-            this.minSizeUnitBox.Size = new System.Drawing.Size(163, 21);
-            this.minSizeUnitBox.TabIndex = 4;
-            // 
             // maxSizeLabel
             // 
             this.maxSizeLabel.AutoSize = true;
@@ -177,28 +161,6 @@
             this.skipPathsGroupBox.TabIndex = 7;
             this.skipPathsGroupBox.TabStop = false;
             this.skipPathsGroupBox.Text = "Auszuschliessende Dateipfade";
-            // 
-            // skipPathsDescriptionBox
-            // 
-            this.skipPathsDescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.skipPathsDescriptionBox.BackColor = System.Drawing.SystemColors.Control;
-            this.skipPathsDescriptionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.skipPathsDescriptionBox.Enabled = false;
-            this.skipPathsDescriptionBox.Location = new System.Drawing.Point(6, 19);
-            this.skipPathsDescriptionBox.Name = "skipPathsDescriptionBox";
-            this.skipPathsDescriptionBox.ReadOnly = true;
-            this.skipPathsDescriptionBox.Size = new System.Drawing.Size(652, 13);
-            format1.Alignment = System.Windows.Forms.HorizontalAlignment.Left;
-            format1.BackColor = System.Drawing.SystemColors.Control;
-            format1.Bullets = false;
-            format1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            format1.ForeColor = System.Drawing.SystemColors.WindowText;
-            format1.Indent = 0;
-            format1.RightIndent = 0;
-            this.skipPathsDescriptionBox.StandardFormat = format1;
-            this.skipPathsDescriptionBox.TabIndex = 6;
-            this.skipPathsDescriptionBox.Text = "";
             // 
             // removeSkipPathButton
             // 
@@ -258,28 +220,6 @@
             this.pathsGroupBox.TabStop = false;
             this.pathsGroupBox.Text = "Zu durchsuchende Dateipfade";
             // 
-            // pathsDescriptionBox
-            // 
-            this.pathsDescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pathsDescriptionBox.BackColor = System.Drawing.SystemColors.Control;
-            this.pathsDescriptionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.pathsDescriptionBox.Enabled = false;
-            this.pathsDescriptionBox.Location = new System.Drawing.Point(6, 19);
-            this.pathsDescriptionBox.Name = "pathsDescriptionBox";
-            this.pathsDescriptionBox.ReadOnly = true;
-            this.pathsDescriptionBox.Size = new System.Drawing.Size(652, 13);
-            format2.Alignment = System.Windows.Forms.HorizontalAlignment.Left;
-            format2.BackColor = System.Drawing.SystemColors.Control;
-            format2.Bullets = false;
-            format2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            format2.ForeColor = System.Drawing.SystemColors.WindowText;
-            format2.Indent = 0;
-            format2.RightIndent = 0;
-            this.pathsDescriptionBox.StandardFormat = format2;
-            this.pathsDescriptionBox.TabIndex = 6;
-            this.pathsDescriptionBox.Text = "";
-            // 
             // removePathButton
             // 
             this.removePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -307,8 +247,6 @@
             this.pathsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pathsListBox.FormattingEnabled = true;
-            this.pathsListBox.Items.AddRange(new object[] {
-            "E:\\Projekte\\Duplica\\Duplica\\bin\\Debug"});
             this.pathsListBox.Location = new System.Drawing.Point(6, 38);
             this.pathsListBox.Name = "pathsListBox";
             this.pathsListBox.Size = new System.Drawing.Size(562, 56);
@@ -357,6 +295,66 @@
             this.FullPath.Name = "FullPath";
             this.FullPath.Text = "Dateipfad";
             this.FullPath.Width = 555;
+            // 
+            // maxSizeUnitBox
+            // 
+            this.maxSizeUnitBox.Location = new System.Drawing.Point(109, 44);
+            this.maxSizeUnitBox.Name = "maxSizeUnitBox";
+            this.maxSizeUnitBox.SelectedIndex = 0;
+            this.maxSizeUnitBox.Size = new System.Drawing.Size(163, 21);
+            this.maxSizeUnitBox.TabIndex = 5;
+            // 
+            // minSizeUnitBox
+            // 
+            this.minSizeUnitBox.Location = new System.Drawing.Point(109, 18);
+            this.minSizeUnitBox.Name = "minSizeUnitBox";
+            this.minSizeUnitBox.SelectedIndex = 0;
+            this.minSizeUnitBox.Size = new System.Drawing.Size(163, 21);
+            this.minSizeUnitBox.TabIndex = 4;
+            // 
+            // skipPathsDescriptionBox
+            // 
+            this.skipPathsDescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skipPathsDescriptionBox.BackColor = System.Drawing.SystemColors.Control;
+            this.skipPathsDescriptionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.skipPathsDescriptionBox.Enabled = false;
+            this.skipPathsDescriptionBox.Location = new System.Drawing.Point(6, 19);
+            this.skipPathsDescriptionBox.Name = "skipPathsDescriptionBox";
+            this.skipPathsDescriptionBox.ReadOnly = true;
+            this.skipPathsDescriptionBox.Size = new System.Drawing.Size(652, 13);
+            format1.Alignment = System.Windows.Forms.HorizontalAlignment.Left;
+            format1.BackColor = System.Drawing.SystemColors.Control;
+            format1.Bullets = false;
+            format1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            format1.ForeColor = System.Drawing.SystemColors.WindowText;
+            format1.Indent = 0;
+            format1.RightIndent = 0;
+            this.skipPathsDescriptionBox.StandardFormat = format1;
+            this.skipPathsDescriptionBox.TabIndex = 6;
+            this.skipPathsDescriptionBox.Text = "";
+            // 
+            // pathsDescriptionBox
+            // 
+            this.pathsDescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pathsDescriptionBox.BackColor = System.Drawing.SystemColors.Control;
+            this.pathsDescriptionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.pathsDescriptionBox.Enabled = false;
+            this.pathsDescriptionBox.Location = new System.Drawing.Point(6, 19);
+            this.pathsDescriptionBox.Name = "pathsDescriptionBox";
+            this.pathsDescriptionBox.ReadOnly = true;
+            this.pathsDescriptionBox.Size = new System.Drawing.Size(652, 13);
+            format2.Alignment = System.Windows.Forms.HorizontalAlignment.Left;
+            format2.BackColor = System.Drawing.SystemColors.Control;
+            format2.Bullets = false;
+            format2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            format2.ForeColor = System.Drawing.SystemColors.WindowText;
+            format2.Indent = 0;
+            format2.RightIndent = 0;
+            this.pathsDescriptionBox.StandardFormat = format2;
+            this.pathsDescriptionBox.TabIndex = 6;
+            this.pathsDescriptionBox.Text = "";
             // 
             // DuplicaForm
             // 

@@ -15,6 +15,8 @@ namespace Duplica.CustomForms
     /// </summary>
     public partial class CustomListView
     {
+        
+#if !DEBUG
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
@@ -24,6 +26,7 @@ namespace Duplica.CustomForms
         private const int WM_CHANGEUISTATE = 0x127;
         private const int UIS_SET = 1;
         private const int UISF_HIDEFOCUS = 0x1;
+#endif
 
         new public WatchedListViewItemCollection Items;
 
@@ -34,23 +37,34 @@ namespace Duplica.CustomForms
         {
             this.Items = new WatchedListViewItemCollection(this);
             this.Items.ListChanged += new ListChangedEventHandler(Items_ListChanged);
+#if !DEBUG
             this.HandleCreated += new EventHandler(CustomListView_HandleCreated);
+#endif
             this.ColumnClick += CustomListView_ColumnClick;
             this.View = View.Details;
             this.FullRowSelect = true;
 
+#if !DEBUG
             //Entfernt die gepunktete Linie um das ausgewählte Item
             SendMessage(this.Handle, WM_CHANGEUISTATE, makeLong(UIS_SET, UISF_HIDEFOCUS), 0);
+#endif
         }
 
         private void CustomListView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            bool reversed = false;
-            if ((ListViewItemSorter is ListViewItemComparer) && (ListViewItemSorter as ListViewItemComparer).Col == e.Column)
-                if (!(ListViewItemSorter as ListViewItemComparer).Reversed)
-                    reversed = true;
-            ListViewItemSorter = new ListViewItemComparer(e.Column, reversed);
-            this.Sort();
+            if ((ListViewItemSorter is ListViewItemComparer) && (ListViewItemSorter as ListViewItemComparer).Column == e.Column)
+            {
+                if (Sorting == SortOrder.Ascending)
+                    Sorting = SortOrder.Descending;
+                else
+                    Sorting = SortOrder.Ascending;
+            }
+            else
+            {
+                Sorting = SortOrder.Ascending;
+            }
+            ListViewItemSorter = new ListViewItemComparer(e.Column, Sorting);
+            Sort();
         }
 
         /// <summary>
@@ -59,10 +73,12 @@ namespace Duplica.CustomForms
         private void Items_ListChanged(object sender, ListChangedEventArgs e)
         {
 #if !DEBUG
-            this.SetGroupState(ListViewGroupState.Collapsible);
+            // ToDo - Überdenken:
+            // this.SetGroupState(ListViewGroupState.Collapsible);
 #endif
         }
 
+#if !DEBUG
         /// <summary>
         /// Legt das Windows Explorer-Design fest
         /// </summary>
@@ -84,6 +100,14 @@ namespace Duplica.CustomForms
         {
             return (short)(word & short.MaxValue);
         }
+#endif
 
+        protected override void OnColumnClick(ColumnClickEventArgs e)
+        {
+            bool showGroups = ShowGroups;
+            ShowGroups = true;
+            base.OnColumnClick(e);
+            ShowGroups = showGroups;
+        }
     }
 }

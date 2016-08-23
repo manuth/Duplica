@@ -9,20 +9,30 @@ namespace Duplica
 {
     public class ListViewItemComparer : IComparer
     {
-        public int Col { get; private set; }
-        public bool Reversed { get; private set; }
+        public int Column { get; private set; }
+        public SortOrder Sorting { get; private set; }
+
         public ListViewItemComparer()
         {
-            Col = 0;
+            Column = 0;
         }
-        public ListViewItemComparer(int column, bool reversed)
+        public ListViewItemComparer(int column, SortOrder sorting)
         {
-            Col = column;
-            this.Reversed = reversed;
+            Column = column;
+            this.Sorting = sorting;
         }
+
         public int Compare(object x, object y)
         {
-            return String.Compare(((ListViewItem)x).SubItems[Col].Text, ((ListViewItem)y).SubItems[Col].Text) * (Reversed ? -1 : 1);
+            return string.Compare(getValue(x as ListViewItem), getValue(y as ListViewItem)) * ((Sorting != SortOrder.Descending) ? 1 : -1);
+        }
+
+        private string getValue(ListViewItem listViewItem)
+        {
+            if (listViewItem.Tag != null)
+                return listViewItem.Tag.ToString();
+            else
+                return listViewItem.Text;
         }
     }
 }

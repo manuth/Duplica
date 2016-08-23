@@ -32,9 +32,11 @@
             Duplica.Format format1 = new Duplica.Format();
             Duplica.Format format2 = new Duplica.Format();
             this.FileListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toggleGroupsMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.openMI = new System.Windows.Forms.ToolStripMenuItem();
             this.explorerMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.separatorMI = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.copyMI = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsPanel = new System.Windows.Forms.Panel();
             this.fileLengthBox = new System.Windows.Forms.GroupBox();
@@ -50,10 +52,11 @@
             this.addPathButton = new System.Windows.Forms.Button();
             this.pathsListBox = new System.Windows.Forms.ListBox();
             this.choosePathDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.duplicateLister = new Duplica.CustomForms.CustomListView();
-            this.FileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.FileLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.FullPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.fileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.fileSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.fullPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.maxSizeUnitBox = new Duplica.CustomForms.FileSizeUnitBox();
             this.minSizeUnitBox = new Duplica.CustomForms.FileSizeUnitBox();
             this.skipPathsDescriptionBox = new Duplica.RichTextBoxEx();
@@ -70,12 +73,29 @@
             this.FileListContextMenu.AccessibleDescription = "sfd";
             this.FileListContextMenu.AccessibleName = "sfd";
             this.FileListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toggleGroupsMI,
+            this.toolStripSeparator1,
             this.openMI,
             this.explorerMI,
-            this.separatorMI,
+            this.toolStripSeparator2,
             this.copyMI});
             this.FileListContextMenu.Name = "contextMenuStrip1";
-            this.FileListContextMenu.Size = new System.Drawing.Size(184, 76);
+            this.FileListContextMenu.Size = new System.Drawing.Size(184, 104);
+            // 
+            // toggleGroupsMI
+            // 
+            this.toggleGroupsMI.Checked = true;
+            this.toggleGroupsMI.CheckOnClick = true;
+            this.toggleGroupsMI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toggleGroupsMI.Name = "toggleGroupsMI";
+            this.toggleGroupsMI.Size = new System.Drawing.Size(183, 22);
+            this.toggleGroupsMI.Text = "Gruppieren";
+            this.toggleGroupsMI.CheckedChanged += new System.EventHandler(this.toggleGroupsMI_CheckedChanged);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(180, 6);
             // 
             // openMI
             // 
@@ -91,17 +111,17 @@
             this.explorerMI.Text = "Im Explorer anzeigen";
             this.explorerMI.Click += new System.EventHandler(this.explorerMI_Click);
             // 
-            // separatorMI
+            // toolStripSeparator2
             // 
-            this.separatorMI.Name = "separatorMI";
-            this.separatorMI.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(180, 6);
             // 
             // copyMI
             // 
             this.copyMI.Name = "copyMI";
             this.copyMI.Size = new System.Drawing.Size(183, 22);
             this.copyMI.Text = "Kopieren";
-            this.copyMI.Click += new System.EventHandler(this.kopierenToolStripMenuItem_Click);
+            this.copyMI.Click += new System.EventHandler(this.copyMI_Click);
             // 
             // optionsPanel
             // 
@@ -256,45 +276,54 @@
             // 
             this.choosePathDialog.ShowNewFolderButton = false;
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(10, 565);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(954, 31);
+            this.panel1.TabIndex = 6;
+            // 
             // duplicateLister
             // 
             this.duplicateLister.AllowColumnReorder = true;
             this.duplicateLister.CheckBoxes = true;
             this.duplicateLister.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.FileName,
-            this.FileLength,
-            this.FullPath});
+            this.fileName,
+            this.fileSize,
+            this.fullPath});
             this.duplicateLister.ContextMenuStrip = this.FileListContextMenu;
             this.duplicateLister.Dock = System.Windows.Forms.DockStyle.Fill;
             this.duplicateLister.FullRowSelect = true;
             this.duplicateLister.LabelWrap = false;
             this.duplicateLister.Location = new System.Drawing.Point(10, 226);
             this.duplicateLister.Name = "duplicateLister";
-            this.duplicateLister.Size = new System.Drawing.Size(954, 370);
+            this.duplicateLister.Size = new System.Drawing.Size(954, 339);
             this.duplicateLister.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.duplicateLister.TabIndex = 5;
+            this.duplicateLister.TabIndex = 7;
             this.duplicateLister.UseCompatibleStateImageBehavior = false;
             this.duplicateLister.View = System.Windows.Forms.View.Details;
+            this.duplicateLister.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.duplicateLister_ColumnClick);
             this.duplicateLister.ItemActivate += new System.EventHandler(this.duplicateLister_ItemActivate);
             this.duplicateLister.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.duplicateLister_ItemDrag);
             // 
-            // FileName
+            // fileName
             // 
-            this.FileName.Name = "FileName";
-            this.FileName.Text = "Dateiname";
-            this.FileName.Width = 71;
+            this.fileName.Name = "fileName";
+            this.fileName.Text = "Dateiname";
+            this.fileName.Width = 71;
             // 
-            // FileLength
+            // fileSize
             // 
-            this.FileLength.Name = "FileLength";
-            this.FileLength.Text = "Grösse";
-            this.FileLength.Width = 89;
+            this.fileSize.Name = "fileSize";
+            this.fileSize.Text = "Grösse";
+            this.fileSize.Width = 89;
             // 
-            // FullPath
+            // fullPath
             // 
-            this.FullPath.Name = "FullPath";
-            this.FullPath.Text = "Dateipfad";
-            this.FullPath.Width = 555;
+            this.fullPath.Name = "fullPath";
+            this.fullPath.Text = "Dateipfad";
+            this.fullPath.Width = 555;
             // 
             // maxSizeUnitBox
             // 
@@ -362,6 +391,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 606);
             this.Controls.Add(this.duplicateLister);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.optionsPanel);
             this.MinimumSize = new System.Drawing.Size(830, 644);
             this.Name = "DuplicaForm";
@@ -383,11 +413,7 @@
         private System.Windows.Forms.ContextMenuStrip FileListContextMenu;
         private System.Windows.Forms.ToolStripMenuItem openMI;
         private System.Windows.Forms.Panel optionsPanel;
-        private CustomForms.CustomListView duplicateLister;
         private System.Windows.Forms.GroupBox pathsGroupBox;
-        private System.Windows.Forms.ColumnHeader FileName;
-        private System.Windows.Forms.ColumnHeader FileLength;
-        private System.Windows.Forms.ColumnHeader FullPath;
         private System.Windows.Forms.ListBox pathsListBox;
         private System.Windows.Forms.Button removePathButton;
         private System.Windows.Forms.FolderBrowserDialog choosePathDialog;
@@ -406,7 +432,14 @@
         private CustomForms.FileSizeUnitBox minSizeUnitBox;
         private CustomForms.FileSizeUnitBox maxSizeUnitBox;
         private System.Windows.Forms.ToolStripMenuItem explorerMI;
-        private System.Windows.Forms.ToolStripSeparator separatorMI;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ColumnHeader fullPath;
+        private System.Windows.Forms.ColumnHeader fileSize;
+        private System.Windows.Forms.ColumnHeader fileName;
+        private CustomForms.CustomListView duplicateLister;
+        private System.Windows.Forms.ToolStripMenuItem toggleGroupsMI;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

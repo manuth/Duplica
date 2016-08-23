@@ -13,6 +13,8 @@ namespace Duplica
                 return "0 " + Constants.Units[1];
             long bytes = Math.Abs(byteCount);
             int unit = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            if (unit > Constants.Units.Length - 1)
+                unit = Constants.Units.Length - 1;
             double num = Math.Round(bytes / Math.Pow(1024, unit), 1);
             return (Math.Sign(byteCount) * num).ToString("#,0.00 ") + Constants.Units[unit + 1];
         }

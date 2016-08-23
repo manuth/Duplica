@@ -38,31 +38,54 @@ namespace Duplica
 
         void duplicateFinder_DuplicateFinderFinished(object sender, DuplicateFinder.DuplicateFinderFinishedEventArgs e)
         {
-            duplicateLister.InvokeIfRequired(() =>
+            List<ListViewGroup> hashFilesGroups = new List<ListViewGroup>(e.DuplicateFiles.Count);
+            List<ListViewItem> duplicateFileItems = new List<ListViewItem>();
+            Dictionary<string, FileInfo[]> duplicateFiles = e.DuplicateFiles.OrderByDescending(duplicateFile => duplicateFile.Value[1].Length).ToDictionary(duplicateFile => duplicateFile.Key, duplicateFile => duplicateFile.Value);
+            foreach (KeyValuePair<string, FileInfo[]> sameFiles in duplicateFiles)
             {
-                duplicateLister.Items.Clear();
-                Dictionary<string, FileInfo[]> duplicateFiles = e.DuplicateFiles.OrderByDescending(duplicateFile => duplicateFile.Value[1].Length).ToDictionary(duplicateFile => duplicateFile.Key, duplicateFile => duplicateFile.Value);
-                foreach (KeyValuePair<string, FileInfo[]> sameFiles in duplicateFiles)
+                ListViewGroup hashFilesGroup = new ListViewGroup
                 {
-                    ListViewGroup hashFilesGroup = new ListViewGroup("Grösse: " + Utilities.BytesToString(sameFiles.Value[0].Length));
-                    foreach (FileInfo duplicateFile in sameFiles.Value)
-                        hashFilesGroup.Items.Add(
-                            new ListViewItem(new string[]
-                            {
-                                duplicateFile.Name,
-                                Utilities.BytesToString(duplicateFile.Length),
-                                duplicateFile.FullName
-                            }));
-                    foreach (ListViewItem fileItem in hashFilesGroup.Items)
-                        duplicateLister.Items.Add(fileItem);
-                    duplicateLister.Groups.Add(hashFilesGroup);
+                    Header = "Grösse: " + Utilities.BytesToString(sameFiles.Value[0].Length),
+                    Tag = sameFiles.Value[0].Length
+                };
+                foreach (FileInfo duplicateFile in sameFiles.Value)
+                {
+                    ListViewItem duplicateFileItem = new ListViewItem
+                    {
+                        Text = duplicateFile.Name,
+                        Tag = duplicateFile.Name
+                    };
+                    duplicateFileItem.SubItems.AddRange(new ListViewItem.ListViewSubItem[]
+                    {
+                        new ListViewItem.ListViewSubItem
+                        {
+                            Text =  Utilities.BytesToString(duplicateFile.Length),
+                            Tag = duplicateFile.Length
+                        },
+                        new ListViewItem.ListViewSubItem
+                        {
+                            Text = duplicateFile.FullName,
+                            Tag = duplicateFile.FullName
+                        }                            
+                    });
+                    hashFilesGroup.Items.Add(duplicateFileItem);
+                    duplicateFileItems.Add(duplicateFileItem);
                 }
-                duplicateLister.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                hashFilesGroups.Add(hashFilesGroup);
+            }
+            this.InvokeIfRequired(true, () =>
+            {
+                duplicateLister.BeginUpdate();
+                duplicateLister.Items.Clear();
+                duplicateLister.Items.AddRange(duplicateFileItems.ToArray());
+                duplicateLister.Groups.AddRange(hashFilesGroups.ToArray());
 #if !DEBUG
                 duplicateLister.SetGroupState(CustomForms.ListViewGroupState.Collapsible);
 #endif
+                duplicateLister.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                duplicateLister.EndUpdate();
+                okButton.Enabled = true;
             });
-            okButton.InvokeIfRequired(() => okButton.Enabled = true);
         }
 
         private void duplicateLister_ItemActivate(object sender, EventArgs e)
@@ -74,7 +97,7 @@ namespace Duplica
         {
             List<string> files = new List<string>();
             foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
-                files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
+                files.Add(selectedItem.SubItems[(sender as ListView).Columns["FullPath"].Index].Text);
             (sender as ListView).DoDragDrop(new DataObject(DataFormats.FileDrop, files.ToArray()), DragDropEffects.Copy);
         }
 
@@ -83,17 +106,17 @@ namespace Duplica
             if (sender is ToolStripMenuItem)
                 sender = (((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as ListView);
             foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
-                Process.Start(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
+                Process.Start(selectedItem.SubItems[(sender as ListView).Columns["FullPath"].Index].Text);
         }
 
-        private void kopierenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void copyMI_Click(object sender, EventArgs e)
         {
             sender = (((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl as ListView);
 
             StringCollection files = new StringCollection();
 
             foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
-                files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
+                files.Add(selectedItem.SubItems[(sender as ListView).Columns["FullPath"].Index].Text);
             Clipboard.SetFileDropList(files);
         }
         
@@ -104,7 +127,7 @@ namespace Duplica
             StringCollection files = new StringCollection();
 
             foreach (ListViewItem selectedItem in (sender as ListView).SelectedItems)
-                files.Add(selectedItem.SubItems[(sender as ListView).Columns["fullPath"].Index].Text);
+                files.Add(selectedItem.SubItems[(sender as ListView).Columns["FullPath"].Index].Text);
 
             foreach (string file in files)
             {
@@ -171,6 +194,26 @@ namespace Duplica
 
             duplicateFinder.DuplicateFinderFinished += duplicateFinder_DuplicateFinderFinished;
             duplicateFinder.Start();
+        }
+
+        private void toggleGroupsMI_CheckedChanged(object sender, EventArgs e)
+        {
+            duplicateLister.ShowGroups = (sender as ToolStripMenuItem).Checked;
+        }
+
+        private void duplicateLister_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == (sender as ListView).Columns["fileSize"].Index)
+            {
+                ListViewGroup[] listViewGroups = new ListViewGroup[(sender as ListView).Groups.Count];
+                (sender as ListView).Groups.CopyTo(listViewGroups, 0);
+                (sender as ListView).Groups.Clear();
+                if ((sender as ListView).Sorting != SortOrder.Descending)
+                    listViewGroups = listViewGroups.OrderBy(listViewGroup => listViewGroup.Tag).ToArray();
+                else
+                    listViewGroups = listViewGroups.OrderByDescending(listViewGroup => listViewGroup.Tag).ToArray();
+                (sender as ListView).Groups.AddRange(listViewGroups);
+            }
         }
     }
 }

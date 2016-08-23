@@ -70,12 +70,16 @@ namespace Duplica.DuplicateFinder
             {
                 FileHasher hasher = new FileHasher(file.FullName, 7 * 1024 * 1024);
                 hasher.Progressed += hasher_Progressed;
-
-                string fileHash = hasher.CalculateHash();
-                if (!hashedFiles.Contains(fileHash))
-                    hashedFiles.Add(fileHash, new List<string>(){ file.FullName });
-                else
-                    (hashedFiles[fileHash] as List<string>).Add(file.FullName);
+                try
+                {
+                    string fileHash = hasher.CalculateHash();
+                    if (!hashedFiles.Contains(fileHash))
+                        hashedFiles.Add(fileHash, new List<string>() { file.FullName });
+                    else
+                        (hashedFiles[fileHash] as List<string>).Add(file.FullName);
+                }
+                catch
+                { }
             }
             foreach (DictionaryEntry hashedFile in hashedFiles)
             {

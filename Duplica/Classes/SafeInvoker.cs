@@ -11,8 +11,18 @@ namespace Duplica
     {
         public static void InvokeIfRequired(this Control control, MethodInvoker action)
         {
+            control.InvokeIfRequired(false, action);
+        }
+
+        public static void InvokeIfRequired(this Control control, bool async, MethodInvoker action)
+        {
             if (control.InvokeRequired)
-                control.Invoke(action);
+            {
+                if (async)
+                    control.BeginInvoke(action);
+                else
+                    control.Invoke(action);
+            }
             else
                 action();
         }
